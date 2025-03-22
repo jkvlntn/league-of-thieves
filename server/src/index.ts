@@ -1,16 +1,18 @@
 import express from "express";
-import { registerBots } from "./controllers/botController";
+import { serverDirectory } from "./utils";
 import path from "path";
+import { registerBots } from "./controllers/botController";
+import botRouter from "./routes/botRoutes";
 
 const app = express();
 const port = 8000;
-const serverDirectory = path.join(path.resolve(__dirname), "../");
+
+app.use(express.json());
 
 app.listen(port, () => {
 	console.log(`Server running on port ${port}`);
 });
 
 registerBots(path.join(serverDirectory, "bot-config.json")).then((bots) => {
-	bots.get("white")?.joinVoiceChannel();
-	bots.get("red")?.joinVoiceChannel();
+	app.use("/api/bots", botRouter);
 });

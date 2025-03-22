@@ -1,16 +1,21 @@
 import { Channel, Client, GatewayIntentBits, VoiceChannel } from "discord.js";
-import { joinVoiceChannel, VoiceConnection } from "@discordjs/voice";
+import {
+	AudioPlayer,
+	createAudioPlayer,
+	createAudioResource,
+	joinVoiceChannel,
+	VoiceConnection,
+} from "@discordjs/voice";
 
 export class Bot {
-	appId: string;
 	apiToken: string;
 	channelId: string;
 	channel: Channel | null;
 	voiceConnection: VoiceConnection | null;
 	client: Client;
+	audioPlayer: AudioPlayer;
 
-	constructor(appId: string, apiToken: string, channelId: string) {
-		this.appId = appId;
+	constructor(apiToken: string, channelId: string) {
 		this.apiToken = apiToken;
 		this.channelId = channelId;
 		this.channel = null;
@@ -25,6 +30,7 @@ export class Bot {
 				GatewayIntentBits.GuildPresences,
 			],
 		});
+		this.audioPlayer = createAudioPlayer();
 	}
 
 	async login(): Promise<boolean> {
@@ -59,6 +65,7 @@ export class Bot {
 				adapterCreator: (this.channel as VoiceChannel).guild
 					.voiceAdapterCreator,
 			});
+			this.voiceConnection.subscribe(this.audioPlayer);
 			return true;
 		} catch {
 			this.leaveVoiceChannel();
@@ -66,8 +73,19 @@ export class Bot {
 		}
 	}
 
-	leaveVoiceChannel() {
+	leaveVoiceChannel(): boolean {
 		this.voiceConnection?.destroy();
 		this.voiceConnection = null;
+		return true;
+	}
+
+	playAudio(audioFile: string): boolean {
+		try {
+			const audioResource = createAudioResource(audioFile);
+			this.audioPlayer.play(audioResource);
+			return true;
+		} catch {
+			return false;
+		}
 	}
 }
