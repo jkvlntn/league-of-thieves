@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs";
 import { audioDirectory } from "../utils";
 import { BotConfig, BotData, BotColor } from "../types";
-import { Bot } from "../models/bot";
+import Bot from "../models/bot";
 import { Request, Response, NextFunction } from "express";
 
 const botColors: Array<BotColor> = [
@@ -125,7 +125,7 @@ export const validateColors = (
 ) => {
 	const colors = req.body.colors;
 	const selectedColors: Array<BotColor> = [];
-	if (Array.isArray(selectedColors)) {
+	if (Array.isArray(colors)) {
 		for (const color of colors) {
 			if (botColors.includes(color) && !selectedColors.includes(color)) {
 				selectedColors.push(color);

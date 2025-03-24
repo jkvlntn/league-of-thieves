@@ -13,7 +13,7 @@ import {
 	VoiceConnection,
 } from "@discordjs/voice";
 
-export class Bot {
+export default class Bot {
 	apiToken: string;
 	channelId: string;
 	channel: Channel | null;
