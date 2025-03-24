@@ -1,4 +1,10 @@
-import { Channel, Client, GatewayIntentBits, VoiceChannel } from "discord.js";
+import {
+	Channel,
+	Client,
+	Events,
+	GatewayIntentBits,
+	VoiceChannel,
+} from "discord.js";
 import {
 	AudioPlayer,
 	createAudioPlayer,
@@ -31,6 +37,11 @@ export class Bot {
 			],
 		});
 		this.audioPlayer = createAudioPlayer();
+		this.client.on(Events.VoiceStateUpdate, (oldState, newState) => {
+			if (this.client.user?.id == newState.id && newState.channelId === null) {
+				this.leaveVoiceChannel();
+			}
+		});
 	}
 
 	async login(): Promise<boolean> {
@@ -54,7 +65,6 @@ export class Bot {
 
 	joinVoiceChannel(): boolean {
 		if (!this.channel) {
-			this.leaveVoiceChannel();
 			return false;
 		}
 		try {
@@ -80,6 +90,9 @@ export class Bot {
 	}
 
 	playAudio(audioFile: string): boolean {
+		if (!this.voiceConnection) {
+			return false;
+		}
 		try {
 			const audioResource = createAudioResource(audioFile);
 			this.audioPlayer.play(audioResource);

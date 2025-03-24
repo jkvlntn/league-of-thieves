@@ -1,7 +1,9 @@
 import path from "path";
+import fs from "fs";
 import { audioDirectory } from "../utils";
 import { BotConfig, BotData, BotColor } from "../types";
 import { Bot } from "../models/bot";
+import { Request, Response, NextFunction } from "express";
 
 const botColors: Array<BotColor> = [
 	"white",
@@ -25,64 +27,26 @@ export const registerBots = async (
 			const loginSuccess = await bot.login();
 			if (!loginSuccess) {
 				bots.set(color, undefined);
-				console.log(`${color} bot failed to connect!`);
+				console.log(`${color} bot failed to connect`);
 			} else {
 				const channelSuccess = await bot.getChannelFromId();
 				if (!channelSuccess) {
-					console.log(`Channel for ${color} bot not found!`);
+					console.log(`Channel for ${color} bot not found`);
 				}
 			}
 		} else {
 			bots.set(color, undefined);
-			console.log(`No data found for ${color} ${botConfigFile}!`);
+			console.log(`No data found for ${color} ${botConfigFile}`);
 		}
 	}
 	return bots;
 };
 
-export const joinVoiceChannel = (
-	selectedColors: Array<BotColor>
-): Map<BotColor, [boolean, string] | null> => {
-	const resultsMap = getResultMap();
-	for (const color of selectedColors) {
-		const bot = bots.get(color);
-		if (!bot) {
-			resultsMap.set(color, [false, "Bot is not online"]);
-		} else {
-			const joinResult = bot.joinVoiceChannel();
-			if (joinResult) {
-				resultsMap.set(color, [true, "Successfully joined voice channel"]);
-			} else {
-				resultsMap.set(color, [false, "Failed to join voice channel"]);
-			}
-		}
-	}
-	return resultsMap;
-};
-
-export const leaveVoiceChannel = (
-	selectedColors: Array<BotColor>
-): Map<BotColor, [boolean, string] | null> => {
-	const resultsMap = getResultMap();
-	for (const color of selectedColors) {
-		const bot = bots.get(color);
-		if (!bot) {
-			resultsMap.set(color, [false, "Bot is not online"]);
-		} else {
-			const joinResult = bot.leaveVoiceChannel();
-			if (joinResult) {
-				resultsMap.set(color, [true, "Successfully left voice channel"]);
-			} else {
-				resultsMap.set(color, [false, "Failed to leave voice channel"]);
-			}
-		}
-	}
-	return resultsMap;
-};
-
-export const playAudio = (
+export const applyToBots = (
 	selectedColors: Array<BotColor>,
-	audioFile: string
+	botFunction: (bot: Bot) => boolean,
+	successMessage: string,
+	errorMessage: string
 ): Map<BotColor, [boolean, string] | null> => {
 	const resultsMap = getResultMap();
 	for (const color of selectedColors) {
@@ -90,14 +54,11 @@ export const playAudio = (
 		if (!bot) {
 			resultsMap.set(color, [false, "Bot is not online"]);
 		} else {
-			const joinResult = bot.playAudio(path.join(audioDirectory, audioFile));
+			const joinResult = botFunction(bot);
 			if (joinResult) {
-				resultsMap.set(color, [
-					true,
-					`Successfully played audio: ${audioFile}`,
-				]);
+				resultsMap.set(color, [true, successMessage]);
 			} else {
-				resultsMap.set(color, [false, `Failed to play audio ${audioFile}`]);
+				resultsMap.set(color, [false, errorMessage]);
 			}
 		}
 	}
@@ -112,15 +73,69 @@ const getResultMap = (): Map<BotColor, [boolean, string] | null> => {
 	return resultMap;
 };
 
-export const getValidatedColors = (selectedColors: any): Array<BotColor> => {
-	if (!Array.isArray(selectedColors)) {
-		return [];
+export const joinBots = (req: Request, res: Response) => {
+	const selectedColors = req.selectedColors || [];
+	const resultsMap = applyToBots(
+		selectedColors,
+		(bot) => {
+			return bot.joinVoiceChannel();
+		},
+		"Successfully joined voice channel",
+		"Failed to join voice channel"
+	);
+	res.status(200).send(Object.fromEntries(resultsMap));
+};
+
+export const leaveBots = (req: Request, res: Response) => {
+	const selectedColors = req.selectedColors || [];
+	const resultsMap = applyToBots(
+		selectedColors,
+		(bot) => {
+			return bot.leaveVoiceChannel();
+		},
+		"Successfully left voice channel",
+		"Failed to leave voice channel"
+	);
+	res.status(200).send(Object.fromEntries(resultsMap));
+};
+
+export const playBots = (req: Request, res: Response) => {
+	const selectedColors = req.selectedColors || [];
+	const audioFile = req.body.sound;
+	const audioFilePath = path.join(audioDirectory, audioFile);
+	if (!fs.existsSync(audioFilePath)) {
+		res.status(400).send({ error: `Audio file ${audioFile} not found` });
+		return;
 	}
-	const selectedBotColors: Array<BotColor> = [];
-	for (const color of selectedColors) {
-		if (botColors.includes(color) && !selectedBotColors.includes(color)) {
-			selectedBotColors.push(color);
+	const resultsMap = applyToBots(
+		selectedColors,
+		(bot) => {
+			return bot.playAudio(audioFilePath);
+		},
+		`Successfully played ${audioFile}`,
+		`Failed to play ${audioFile}`
+	);
+	res.status(200).send(Object.fromEntries(resultsMap));
+};
+
+export const validateColors = (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const colors = req.body.colors;
+	const selectedColors: Array<BotColor> = [];
+	if (Array.isArray(selectedColors)) {
+		for (const color of colors) {
+			if (botColors.includes(color) && !selectedColors.includes(color)) {
+				selectedColors.push(color);
+			}
 		}
 	}
-	return selectedBotColors;
+	if (selectedColors.length == 0) {
+		res.status(400).send({ error: "No bot colors selected" });
+		return;
+	}
+	req.selectedColors = selectedColors;
+	next();
 };
