@@ -1,0 +1,30 @@
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: server
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./server/.env
+    restart: always
+    networks:
+      - app-network
+
+  website:
+    build:
+      context: ./website
+      dockerfile: Dockerfile
+    container_name: website
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./website/.env
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

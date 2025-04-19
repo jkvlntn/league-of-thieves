@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 import { audioDirectory } from "../utils";
-import { BotConfig, BotData, BotColor } from "../types";
+import { BotColor } from "../types";
 import Bot from "../models/bot";
 import { Request, Response, NextFunction } from "express";
 
@@ -15,14 +15,14 @@ const botColors: Array<BotColor> = [
 ];
 let bots: Map<BotColor, Bot | undefined> = new Map();
 
-export const registerBots = async (
-	botConfigFile: string
-): Promise<Map<BotColor, Bot | undefined>> => {
-	const botConfig: BotConfig = require(botConfigFile);
+export const registerBots = async (): Promise<
+	Map<BotColor, Bot | undefined>
+> => {
 	for (const color of botColors) {
-		let botData: BotData | undefined = botConfig[color];
-		if (botData) {
-			const bot = new Bot(botData.token, botData.channel);
+		const token = process.env[`${color.toUpperCase()}_TOKEN`];
+		const channel = process.env[`${color.toUpperCase()}_CHANNEL`];
+		if (token && channel) {
+			const bot = new Bot(token, channel);
 			bots.set(color, bot);
 			const loginSuccess = await bot.login();
 			if (!loginSuccess) {
@@ -36,7 +36,7 @@ export const registerBots = async (
 			}
 		} else {
 			bots.set(color, undefined);
-			console.log(`No data found for ${color} ${botConfigFile}`);
+			console.log(`Missing data for ${color}`);
 		}
 	}
 	return bots;

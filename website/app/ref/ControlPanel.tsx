@@ -122,10 +122,11 @@ interface CommandStatus {
 }
 
 interface Props {
+	apiURL: string;
 	apiKey: string;
 }
 
-const ControlPanel: React.FC<Props> = ({ apiKey }) => {
+const ControlPanel: React.FC<Props> = ({ apiURL, apiKey }) => {
 	const [selectedColors, setSelectedColors] = useState<Array<string>>([]);
 	const [statusHistory, setStatusHistory] = useState<Array<CommandStatus>>([]);
 	const [displayStatusHistory, setDisplayStatusHistory] = useState(false);
@@ -141,20 +142,17 @@ const ControlPanel: React.FC<Props> = ({ apiKey }) => {
 
 	const runCommand = async (command: string, sound: string) => {
 		try {
-			const response = await fetch(
-				`${process.env.NEXT_PUBLIC_API_URL}/api/bots/${command}`,
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						colors: selectedColors,
-						sound: sound,
-						key: apiKey,
-					}),
-				}
-			);
+			const response = await fetch(`${apiURL}/api/bots/${command}`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					colors: selectedColors,
+					sound: sound,
+					key: apiKey,
+				}),
+			});
 			const result = await response.json();
 			if (!response.ok) {
 				setError(result.error);
@@ -197,7 +195,7 @@ const ControlPanel: React.FC<Props> = ({ apiKey }) => {
 				</div>
 			</div>
 			<div className="bg-neutral-900 p-5 mt-5 ">
-				<Timer apiKey={apiKey} />
+				<Timer apiURL={apiURL} apiKey={apiKey} />
 			</div>
 			<div className="bg-neutral-900 p-5 mt-5">
 				<div

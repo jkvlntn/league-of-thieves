@@ -1,8 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { serverDirectory } from "./utils";
 import dotenv from "dotenv";
-import path from "path";
 import { registerBots } from "./controllers/botController";
 import botRouter from "./routes/botRoutes";
 import timerRouter from "./routes/timerRoutes";
@@ -27,7 +25,7 @@ app.use(express.json());
 const server = http.createServer(app);
 initializeSocket(server);
 
-registerBots(path.join(serverDirectory, "bot-config.json")).then((bots) => {
+registerBots().then((bots) => {
 	app.use("/api/bots", botRouter);
 });
 

@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 const font = localFont({
-	src: "./font.ttf",
+	src: "./GivensAntiquaStd.otf",
 });
 
 export const metadata: Metadata = {

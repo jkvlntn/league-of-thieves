@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 
-dotenv.config();
 const requiredKey = process.env.KEY || "";
 
 export const validateAuthorization = (

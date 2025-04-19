@@ -4,17 +4,18 @@ import Error from "./Error";
 import { io } from "socket.io-client";
 
 interface Props {
+	apiURL: string;
 	apiKey: string;
 }
 
-const Timer: React.FC<Props> = ({ apiKey }) => {
+const Timer: React.FC<Props> = ({ apiURL, apiKey }) => {
 	const [time, setTime] = useState(0);
 	const [running, setRunning] = useState(false);
 	const [setMinutesTo, setSetMinutesTo] = useState<number | "">("");
 	const [setSecondsTo, setSetSecondsTo] = useState<number | "">("");
 	const [error, setError] = useState("");
 
-	const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`, {
+	const socket = io(`${apiURL}`, {
 		transports: ["websocket"],
 	});
 
@@ -23,13 +24,10 @@ const Timer: React.FC<Props> = ({ apiKey }) => {
 
 	const getTime = async () => {
 		try {
-			const response = await fetch(
-				`${process.env.NEXT_PUBLIC_API_URL}/api/timer`,
-				{
-					method: "GET",
-					headers: { "Content-Type": "application/json" },
-				}
-			);
+			const response = await fetch(`${apiURL}/api/timer`, {
+				method: "GET",
+				headers: { "Content-Type": "application/json" },
+			});
 			const data = await response.json();
 			if (!response.ok) {
 				setError("Failed to sync timer");
@@ -45,17 +43,14 @@ const Timer: React.FC<Props> = ({ apiKey }) => {
 
 	const controlTimer = async (endpoint: string) => {
 		try {
-			const response = await fetch(
-				`${process.env.NEXT_PUBLIC_API_URL}/api/timer/${endpoint}`,
-				{
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({
-						time: (setMinutesTo || 0) * 60 + (setSecondsTo || 0),
-						key: apiKey,
-					}),
-				}
-			);
+			const response = await fetch(`${apiURL}/api/timer/${endpoint}`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					time: (setMinutesTo || 0) * 60 + (setSecondsTo || 0),
+					key: apiKey,
+				}),
+			});
 			if (!response.ok) {
 				const data = await response.json();
 				setError(data.error);
