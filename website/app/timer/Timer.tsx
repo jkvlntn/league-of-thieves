@@ -10,10 +10,6 @@ const Timer: React.FC<Props> = ({ apiURL }) => {
 	const [time, setTime] = useState(0);
 	const [running, setRunning] = useState(false);
 
-	const socket = io(`${apiURL}`, {
-		transports: ["websocket"],
-	});
-
 	const minutes = Math.floor(time / 60);
 	const seconds = time % 60;
 
@@ -34,12 +30,16 @@ const Timer: React.FC<Props> = ({ apiURL }) => {
 	};
 
 	useEffect(() => {
-		getTime();
+		const socket = io(`${apiURL}`, {
+			transports: ["websocket"],
+		});
 
 		socket.on("timer", () => {
 			console.log("updating");
 			getTime();
 		});
+
+		getTime();
 
 		window.addEventListener("focus", getTime);
 
