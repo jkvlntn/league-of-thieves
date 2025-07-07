@@ -20,6 +20,7 @@ export default function MobileNav({ navLinks }: Props) {
 							fill
 							objectFit="contain"
 							objectPosition="left"
+							quality={100}
 						/>
 					</Link>
 				</div>

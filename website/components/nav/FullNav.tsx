@@ -15,6 +15,7 @@ export default function FullNav({ navLinks }: Props) {
 						alt="League of Thieves"
 						fill
 						objectFit="contain"
+						quality={100}
 					/>
 				</Link>
 			</div>

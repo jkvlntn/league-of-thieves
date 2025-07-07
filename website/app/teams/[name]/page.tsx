@@ -62,6 +62,7 @@ export default async function TeamPage({ params }: Props) {
 										alt={player.username}
 										fill
 										objectFit="contain"
+										quality={100}
 									/>
 								</div>
 							);
@@ -90,7 +91,8 @@ export default async function TeamPage({ params }: Props) {
 									src={player.image || "/images/default_player.png"}
 									alt={player.username}
 									fill
-									objectFit="cover"
+									objectFit="contain"
+									quality={100}
 								/>
 							</div>
 							<div

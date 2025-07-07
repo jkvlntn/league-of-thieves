@@ -10,7 +10,8 @@ export default function Footer() {
 						src="/images/discord_logo.png"
 						alt="Discord"
 						fill
-						objectFit="cover"
+						objectFit="contain"
+						quality={100}
 					/>
 				</Link>
 			</div>
@@ -20,7 +21,8 @@ export default function Footer() {
 						src="/images/twitter_logo.png"
 						alt="Twitter"
 						fill
-						objectFit="cover"
+						objectFit="contain"
+						quality={100}
 					/>
 				</Link>
 			</div>
@@ -30,7 +32,8 @@ export default function Footer() {
 						src="/images/twitch_logo.png"
 						alt="Twitch"
 						fill
-						objectFit="cover"
+						objectFit="contain"
+						quality={100}
 					/>
 				</Link>
 			</div>
@@ -43,7 +46,8 @@ export default function Footer() {
 						src="/images/youtube_logo.png"
 						alt="YouTube"
 						fill
-						objectFit="cover"
+						objectFit="contain"
+						quality={100}
 					/>
 				</Link>
 			</div>

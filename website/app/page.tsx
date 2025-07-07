@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export default function Home() {
@@ -15,6 +14,7 @@ export default function Home() {
 							alt="Watch"
 							fill
 							objectFit="cover"
+							quality={100}
 						/>
 					</div>
 					<div className="relative w-1/2 aspect-[6/1] tranform hover:scale-105 transition-all">
@@ -24,6 +24,7 @@ export default function Home() {
 								alt="Spectate"
 								fill
 								objectFit="cover"
+								quality={100}
 							/>
 						</Link>
 					</div>
@@ -35,6 +36,7 @@ export default function Home() {
 						alt="Pirate"
 						fill
 						objectFit="cover"
+						quality={100}
 					/>
 				</div>
 			</div>
@@ -49,6 +51,7 @@ export default function Home() {
 							alt="Join"
 							fill
 							objectFit="cover"
+							quality={100}
 						/>
 					</div>
 					<div className="relative w-1/2 aspect-[6/1] transform hover:scale-105 transition-all">
@@ -58,6 +61,7 @@ export default function Home() {
 								alt="Enter"
 								fill
 								objectFit="cover"
+								quality={100}
 							/>
 						</Link>
 					</div>
@@ -70,6 +74,7 @@ export default function Home() {
 						alt="Pirate"
 						fill
 						objectFit="cover"
+						quality={100}
 					/>
 				</div>
 			</div>
