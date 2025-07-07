@@ -14,7 +14,7 @@ export default async function TeamsPage() {
 					<TeamBox
 						key={team.id}
 						name={team.name}
-						image={team.image || "/noimage.png"}
+						image={team.image || "/images/noimage.png"}
 					/>
 				))}
 			</div>

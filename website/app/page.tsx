@@ -52,7 +52,7 @@ export default function Home() {
 						/>
 					</div>
 					<div className="relative w-1/2 aspect-[6/1] transform hover:scale-105 transition-all">
-						<Link href="https://www.twitch.tv/leagueofthievestv">
+						<Link href="https://discord.com/invite/leagueofthieves">
 							<Image
 								src="/images/enter.png"
 								alt="Enter"
