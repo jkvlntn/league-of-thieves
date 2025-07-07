@@ -1,28 +1,18 @@
-import { getSession, login } from "@/actions/auth";
 import { redirect } from "next/navigation";
+import { validateRef, validateAdmin } from "@/lib/session";
+import LoginForm from "@/components/login/LoginForm";
 
-const LoginPage = async () => {
-	const session = await getSession();
-	if (session.accessLevel) {
-		if (session.accessLevel == 1) {
-			redirect("/ref");
-		} else if (session.accessLevel == 2) {
-			redirect("/");
-		}
+export default async function LoginPage() {
+	if (await validateAdmin()) {
+		redirect("/admin");
+	}
+	if (await validateRef()) {
+		redirect("/ref");
 	}
 	return (
-		<div>
-			<form action={login}>
-				<input
-					className="font-serif"
-					type="password"
-					name="password"
-					placeholder="Password"
-				/>
-				<button>Submit</button>
-			</form>
+		<div className="min-h-[calc(100vh-9rem)] flex flex-col gap-5 items-center">
+			<div className="text-xl">Enter Password to Proceed</div>
+			<LoginForm />
 		</div>
 	);
-};
-
-export default LoginPage;
+}

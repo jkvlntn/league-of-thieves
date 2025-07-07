@@ -16,6 +16,9 @@ services:
     build:
       context: ./website
       dockerfile: Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+        DIRECT_URL: ${DIRECT_URL}
     container_name: website
     ports:
       - "3000:3000"

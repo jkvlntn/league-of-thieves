@@ -91,9 +91,9 @@ const buttonData: Array<ButtonData> = [
 		sound: "timeout.wav",
 	},
 	{
-		display: "Area Closing",
+		display: "Raise Anchors",
 		command: "play",
-		sound: "area.wav",
+		sound: "anchors.wav",
 	},
 	{
 		display: "4 Ships",
@@ -161,13 +161,13 @@ const ControlPanel: React.FC<Props> = ({ apiURL, apiKey }) => {
 			setError("");
 			setStatusHistory([result, ...statusHistory].slice(0, 7));
 		} catch {
-			setError("An internal error has occured");
+			setError("Could not connect to server");
 		}
 	};
 
 	return (
 		<div>
-			<div className="bg-neutral-900 p-5">
+			<div className="p-5">
 				<div className="flex sm:justify-center justify-between sm:gap-10 gap-3">
 					{checkBoxData.map((data) => (
 						<CheckBox
@@ -180,7 +180,7 @@ const ControlPanel: React.FC<Props> = ({ apiURL, apiKey }) => {
 						</CheckBox>
 					))}
 				</div>
-				<div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+				<div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
 					{buttonData.map((data, i) => (
 						<PanelButton
 							key={i}
@@ -194,10 +194,10 @@ const ControlPanel: React.FC<Props> = ({ apiURL, apiKey }) => {
 					<Error>{error}</Error>
 				</div>
 			</div>
-			<div className="bg-neutral-900 p-5 mt-5 ">
+			<div className="p-5 mt-5 ">
 				<Timer apiURL={apiURL} apiKey={apiKey} />
 			</div>
-			<div className="bg-neutral-900 p-5 mt-5">
+			<div className="p-5 mt-5">
 				<div
 					className="cursor-pointer"
 					onClick={() => {

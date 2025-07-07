@@ -1,15 +1,14 @@
-import { getSession } from "@/actions/auth";
+import { validateRef } from "@/lib/session";
 import { redirect } from "next/navigation";
-import ControlPanel from "./ControlPanel";
+import ControlPanel from "@/components/ref/ControlPanel";
 
 const RefPage = async () => {
-	const session = await getSession();
-	if (!session.accessLevel || session.accessLevel < 1) {
+	if (!(await validateRef())) {
 		redirect("/login");
 	}
 
 	return (
-		<div className="bg-[#292224] text-white p-5 min-h-screen min-w-full">
+		<div className="p-5 min-h-screen min-w-full">
 			<ControlPanel
 				apiURL={process.env.API_URL || ""}
 				apiKey={process.env.KEY || ""}

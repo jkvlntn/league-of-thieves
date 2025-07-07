@@ -67,7 +67,7 @@ const Timer: React.FC<Props> = ({ apiURL }) => {
 	}, [running]);
 
 	return (
-		<div className="text-white text-9xl">
+		<div className="text-white text-8xl sm:text-9xl">
 			{`${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
 				2,
 				"0"

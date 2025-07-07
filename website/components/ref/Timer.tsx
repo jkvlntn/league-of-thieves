@@ -33,7 +33,7 @@ const Timer: React.FC<Props> = ({ apiURL, apiKey }) => {
 			setTime(data.time);
 			setRunning(data.running);
 		} catch {
-			setError("An internal error has occured");
+			setError("Could not connect to server");
 		}
 	};
 
@@ -54,7 +54,7 @@ const Timer: React.FC<Props> = ({ apiURL, apiKey }) => {
 			}
 			setError("");
 		} catch (e) {
-			setError("An internal error has occured");
+			setError("Could not connect to server");
 		}
 	};
 
