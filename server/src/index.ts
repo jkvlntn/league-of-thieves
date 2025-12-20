@@ -1,11 +1,15 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { registerBots } from "./controllers/botController";
-import botRouter from "./routes/botRoutes";
-import timerRouter from "./routes/timerRoutes";
+import { errorHandler } from "./api/middleware/error-middleware";
+import * as socketService from "./api/services/socket-service";
+import botRouter from "./api/routes/audio-bot-routes";
+import timerRouter from "./api/routes/timer-routes";
+import playerRouter from "./api/routes/player-routes";
+import teamRouter from "./api/routes/team-routes";
+import authRouter from "./api/routes/auth-routes";
+import staffRouter from "./api/routes/staff-routes";
 import http from "http";
-import { initializeSocket } from "./socket";
 
 dotenv.config();
 const port = process.env.PORT || 8000;
@@ -20,16 +24,24 @@ app.use(
 	})
 );
 
+app.use((req, res, next) => {
+	console.log(`Request Method: ${req.method}, Request URL: ${req.url}`);
+	next();
+});
+
 app.use(express.json());
 
 const server = http.createServer(app);
-initializeSocket(server);
+socketService.initialize(server);
 
-registerBots().then((bots) => {
-	app.use("/api/bots", botRouter);
-});
-
+app.use("/api/bots", botRouter);
 app.use("/api/timer", timerRouter);
+app.use("/api/players", playerRouter);
+app.use("/api/teams", teamRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/staff", staffRouter);
+
+app.use(errorHandler);
 
 server.listen(port, () => {
 	console.log(`Server running on port ${port}`);

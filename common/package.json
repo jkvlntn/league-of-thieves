@@ -1,0 +1,19 @@
+{
+	"name": "@lot/common",
+	"version": "1.0.0",
+	"main": "dist/cjs/index.js",
+	"module": "dist/esm/index.js",
+	"types": "dist/esm/index.d.ts",
+	"exports": {
+		"import": "./dist/esm/index.js",
+		"require": "./dist/cjs/index.js"
+	},
+	"scripts": {
+		"build": "npm run build:cjs && npm run build:esm",
+		"build:cjs": "tsc -p tsconfig.cjs.json",
+		"build:esm": "tsc -p tsconfig.esm.json"
+	},
+	"devDependencies": {
+		"typescript": "^5.9.2"
+	}
+}
