@@ -21,6 +21,6 @@ RUN npm install -g serve
 
 COPY --from=build /app/staff-client/dist ./dist
 
-EXPOSE 5173
+EXPOSE 3001
 
-CMD ["serve", "-s", "dist", "-l", "5173"]
+CMD ["serve", "-s", "dist", "-l", "3001"]

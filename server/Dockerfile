@@ -25,6 +25,7 @@ COPY server ./
 COPY --from=build /app/server/dist ./dist
 RUN npm install --omit=dev
 RUN npx prisma generate
+RUN npx prisma db push --accept-data-loss
 
 EXPOSE 8000
 
