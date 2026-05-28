@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Player {
+  id Int @id @default(autoincrement())
+  username String @unique
+  image String?
+  teamId Int?
+  team Team? @relation(fields: [teamId], references: [id])
+  priority Int @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Team {
+  id Int @id @default(autoincrement())
+  name String @unique
+  image String?
+  motto String?
+  slugName String @unique
+  players Player[]
+  discordRole String? @unique
+  sloopElo Int @default(1000)
+  galleonElo Int @default(1000)
+  password String @default("")
+  createdAt DateTime @default(now())
+}
+
+model Staff {
+  id Int @id @default(autoincrement())
+  username String @unique
+  password String @default("")
+  activationCode String?
+  permissions StaffPermission[]
+  createdAt DateTime @default(now())
+}
+
+model StaffPermission {
+  id Int @id @default(autoincrement())
+  permissionName String
+  staffId Int
+  staff Staff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}

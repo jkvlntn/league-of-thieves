@@ -1,11 +1,24 @@
 services:
   server:
     build:
-      context: ./server
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./server/Dockerfile
     container_name: server
     ports:
       - "8000:8000"
+    env_file:
+      - ./server/.env
+    restart: always
+    networks:
+      - app-network
+
+  staff-client:
+    build:
+      context: ./
+      dockerfile: ./staff-client/Dockerfile
+    container_name: staff-client
+    ports:
+      - "5173:5173"
     env_file:
       - ./server/.env
     restart: always
@@ -16,9 +29,6 @@ services:
     build:
       context: ./website
       dockerfile: Dockerfile
-      args:
-        DATABASE_URL: ${DATABASE_URL}
-        DIRECT_URL: ${DIRECT_URL}
     container_name: website
     ports:
       - "3000:3000"

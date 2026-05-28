@@ -1,23 +1,7 @@
-import db from "@/lib/database";
-import TeamBox from "@/components/teams/TeamBox";
+export const dynamic = "force-dynamic";
+import TeamsPageClient from "./TeamsPageClient";
 
 export default async function TeamsPage() {
-	const teams = await db.team.findMany({
-		orderBy: {
-			name: "asc",
-		},
-	});
-	return (
-		<div className="min-h-[calc(100vh-9rem)] ">
-			<div className="flex justify-center flex-wrap gap-10">
-				{teams.map((team) => (
-					<TeamBox
-						key={team.id}
-						name={team.name}
-						image={team.image || "/images/noimage.png"}
-					/>
-				))}
-			</div>
-		</div>
-	);
+	const apiURL = process.env.NEXT_PUBLIC_API_URL || "";
+	return <TeamsPageClient apiURL={apiURL} />;
 }

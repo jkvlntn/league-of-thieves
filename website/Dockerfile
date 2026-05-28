@@ -17,15 +17,6 @@ FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ARG DATABASE_URL
-ENV DATABASE_URL=${DATABASE_URL}
-
-ARG DIRECT_URL
-ENV DIRECT_URL=${DIRECT_URL}
-
-# Generate Prisma client for alpine (musl) builds
-RUN npx prisma db push --accept-data-loss
-
 # Build Next.js app
 RUN npm run build
 

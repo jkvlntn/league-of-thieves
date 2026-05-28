@@ -1,4 +1,3 @@
-import { validateRef, validateAdmin } from "@/lib/session";
 import MobileNav from "@/components/nav/MobileNav";
 import FullNav from "@/components/nav/FullNav";
 
@@ -8,16 +7,6 @@ export default async function Nav() {
 		{ label: "Hall of Fame", href: "/hall" },
 		{ label: "Match", href: "/timer" },
 	];
-
-	const showAdmin = await validateAdmin();
-	const showRef = showAdmin || (await validateRef());
-
-	if (showRef) {
-		navLinks.push({ label: "Referee", href: "/ref" });
-	}
-	if (showAdmin) {
-		navLinks.push({ label: "Admin", href: "/admin" });
-	}
 
 	return (
 		<div>

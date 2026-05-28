@@ -14,19 +14,16 @@ const Timer: React.FC<Props> = ({ apiURL }) => {
 	const seconds = time % 60;
 
 	const getTime = async () => {
-		try {
-			console.log(apiURL);
-			const response = await fetch(`${apiURL}/api/timer`, {
-				method: "GET",
-				headers: { "Content-Type": "application/json" },
-			});
-			const data = await response.json();
-			if (!response.ok) {
-				return;
-			}
-			setTime(data.time);
-			setRunning(data.running);
-		} catch {}
+		const response = await fetch(`${apiURL}/api/timer`, {
+			method: "GET",
+			headers: { "Content-Type": "application/json" },
+		});
+		const timerData = await response.json();
+		if (!response.ok) {
+			return;
+		}
+		setTime(timerData.data.time);
+		setRunning(timerData.data.running);
 	};
 
 	useEffect(() => {
@@ -70,7 +67,7 @@ const Timer: React.FC<Props> = ({ apiURL }) => {
 		<div className="text-white text-8xl sm:text-9xl">
 			{`${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
 				2,
-				"0"
+				"0",
 			)}`}
 		</div>
 	);
