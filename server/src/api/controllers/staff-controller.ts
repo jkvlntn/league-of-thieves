@@ -47,22 +47,22 @@ export const updateStaff = asyncHandler<Staff>(async (req, res, next) => {
 	}
 	const validStaffData = staffSchema.parse(req.body);
 	const staffWithSameUsernameExists = await staffService.doesStaffExist(
-		validStaffData.username
+		validStaffData.username,
 	);
 	if (staffWithSameUsernameExists) {
 		const existingStaff = await staffService.getStaffMember(
-			validStaffData.username
+			validStaffData.username,
 		);
 		if (existingStaff && existingStaff.id !== staffId) {
 			throw new HttpError(
 				400,
-				"A staff member with this username already exists"
+				"A staff member with this username already exists",
 			);
 		}
 	}
 	const updatedStaffId = await staffService.updateStaffMember(
 		staffId,
-		validStaffData
+		validStaffData,
 	);
 	const updatedStaff = await staffService.getStaffMember(updatedStaffId);
 	if (!updatedStaff) {
@@ -88,3 +88,19 @@ export const deleteStaff = asyncHandler<void>(async (req, res, next) => {
 		data: undefined,
 	};
 });
+
+export const resetStaffActivation = asyncHandler<StaffActivation>(
+	async (req, res, next) => {
+		const staffId = parseId(req.params.id);
+		const exists = await staffService.doesStaffExist(staffId);
+		if (!exists) {
+			throw new HttpError(404, "Staff not found");
+		}
+		const newActivation = await staffService.resetStaffActivation(staffId);
+		return {
+			message: "Staff activation reset successfully",
+			status: 200,
+			data: newActivation,
+		};
+	},
+);

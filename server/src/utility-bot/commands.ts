@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+/*import { SlashCommandBuilder } from "discord.js";
 
 const commands: Array<SlashCommandBuilder> = [];
 
@@ -18,3 +18,4 @@ const createChannelsCommand = new SlashCommandBuilder()
 commands.push(createChannelsCommand);
 
 export default commands;
+*/

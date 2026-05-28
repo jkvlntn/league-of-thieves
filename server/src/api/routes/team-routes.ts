@@ -1,6 +1,6 @@
 import express from "express";
 import * as teamEndpoints from "../controllers/team-controller";
-import { hasStaffPermissions } from "../middleware/auth-middleware";
+import { getStaffId, hasStaffPermissions } from "../middleware/auth-middleware";
 import { StaffPermissionName } from "@lot/common";
 
 const router = express.Router();
@@ -10,18 +10,21 @@ router.get("/name/:slugName", teamEndpoints.getTeamBySlugName);
 router.get("/:id", teamEndpoints.getTeamById);
 router.post(
 	"/",
+	getStaffId,
 	hasStaffPermissions(StaffPermissionName.MANAGE_TEAMS),
-	teamEndpoints.createTeam
+	teamEndpoints.createTeam,
 );
 router.delete(
 	"/:id",
+	getStaffId,
 	hasStaffPermissions(StaffPermissionName.MANAGE_TEAMS),
-	teamEndpoints.deleteTeam
+	teamEndpoints.deleteTeam,
 );
 router.patch(
 	"/:id",
+	getStaffId,
 	hasStaffPermissions(StaffPermissionName.MANAGE_TEAMS),
-	teamEndpoints.updateTeam
+	teamEndpoints.updateTeam,
 );
 
 export default router;

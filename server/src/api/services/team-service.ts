@@ -1,5 +1,5 @@
 import { orm } from "../../lib/database";
-import { Team, TeamWithPlayers, CreateTeamDTO } from "@lot/common";
+import { Team, TeamWithPlayers } from "@lot/common";
 import { slugify } from "../../lib/utils";
 
 export async function getAllTeams(): Promise<Team[]> {
@@ -24,18 +24,18 @@ export async function getAllTeams(): Promise<Team[]> {
 export async function getTeam(teamSlugName: string): Promise<Team | null>;
 export async function getTeam(teamId: number): Promise<Team | null>;
 export async function getTeam(
-	identifier: number | string
+	identifier: number | string,
 ): Promise<Team | null> {
 	const teamData =
 		typeof identifier === "number"
 			? await orm.team.findUnique({
 					where: { id: identifier },
 					include: { _count: { select: { players: true } } },
-			  })
+				})
 			: await orm.team.findUnique({
 					where: { slugName: identifier },
 					include: { _count: { select: { players: true } } },
-			  });
+				});
 
 	if (!teamData) {
 		return null;
@@ -54,24 +54,24 @@ export async function getTeam(
 }
 
 export async function getTeamWithPlayers(
-	teamSlugName: string
+	teamSlugName: string,
 ): Promise<TeamWithPlayers | null>;
 export async function getTeamWithPlayers(
-	teamId: number
+	teamId: number,
 ): Promise<TeamWithPlayers | null>;
 export async function getTeamWithPlayers(
-	identifier: number | string
+	identifier: number | string,
 ): Promise<TeamWithPlayers | null> {
 	const teamData =
 		typeof identifier === "number"
 			? await orm.team.findUnique({
 					where: { id: identifier },
 					include: { players: true, _count: { select: { players: true } } },
-			  })
+				})
 			: await orm.team.findUnique({
 					where: { slugName: identifier },
 					include: { players: true, _count: { select: { players: true } } },
-			  });
+				});
 
 	if (!teamData) {
 		return null;
@@ -102,18 +102,18 @@ export async function getTeamWithPlayers(
 export async function doesTeamExist(teamId: number): Promise<boolean>;
 export async function doesTeamExist(teamSlugName: string): Promise<boolean>;
 export async function doesTeamExist(
-	identifier: number | string
+	identifier: number | string,
 ): Promise<boolean> {
 	const teamData =
 		typeof identifier === "number"
 			? await orm.team.findUnique({
 					select: { id: true },
 					where: { id: identifier },
-			  })
+				})
 			: await orm.team.findUnique({
 					select: { id: true },
 					where: { slugName: identifier },
-			  });
+				});
 	return !!teamData;
 }
 
@@ -145,7 +145,7 @@ export async function updateTeam(
 		image?: string | null;
 		motto?: string | null;
 		discordRole?: string | null;
-	}
+	},
 ): Promise<number> {
 	const updatedTeamData = await orm.team.update({
 		where: { id: teamId },

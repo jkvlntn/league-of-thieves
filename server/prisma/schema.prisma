@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -49,26 +48,3 @@ model StaffPermission {
   staff Staff @relation(fields: [staffId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 }
-
-model Admin {
-  id Int @id @default(autoincrement())
-  name String?
-  password String
-  createdAt DateTime @default(now())
-}
-
-model Referee {
-  id Int @id @default(autoincrement())
-  name String?
-  password String
-  createdAt DateTime @default(now())
-}
-
-model BlacklistedRoles {
-  id Int @id @default(autoincrement())
-  roleId String @unique
-  roleName String?
-  createdAt DateTime @default(now())
-}
-
-

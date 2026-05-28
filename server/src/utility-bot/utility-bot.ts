@@ -1,4 +1,4 @@
-import {
+/*import {
 	ActionRow,
 	ChannelType,
 	ChatInputCommandInteraction,
@@ -13,7 +13,6 @@ import {
 } from "discord.js";
 import commands from "./commands";
 import { orm } from "../lib/database";
-import { Fn } from "../../generated/prisma/runtime/library";
 import { Team } from "../../generated/prisma";
 import { generatePassword } from "../lib/utils";
 
@@ -61,7 +60,7 @@ export default class UtilityBot {
 				Routes.applicationCommands(process.env.UTILITY_BOT_ID || ""),
 				{
 					body: commands.map((command) => command.toJSON()),
-				}
+				},
 			);
 			console.log("Successfully reloaded utility bot (/) commands.");
 		} catch (error) {
@@ -74,7 +73,7 @@ export default class UtilityBot {
 		if (interaction.commandName === "getpassword") {
 			await this.doIfCaptainOfTeam(interaction, async (interaction, team) => {
 				await interaction.editReply(
-					`${team.name} password is \`${team.password}\``
+					`${team.name} password is \`${team.password}\``,
 				);
 			});
 		} else if (interaction.commandName === "resetpassword") {
@@ -85,7 +84,7 @@ export default class UtilityBot {
 					data: { password: newPassword },
 				});
 				await interaction.editReply(
-					`${team.name} password has been reset to \`${newPassword}\``
+					`${team.name} password has been reset to \`${newPassword}\``,
 				);
 			});
 		} else if (interaction.commandName === "createchannels") {
@@ -96,7 +95,7 @@ export default class UtilityBot {
 				"Rascals",
 				"234567890123456789",
 				"2023-10-01",
-				"Galleon"
+				"Galleon",
 			);
 			await interaction.editReply("Match channels created successfully.");
 		} else {
@@ -108,13 +107,13 @@ export default class UtilityBot {
 		interaction: ChatInputCommandInteraction,
 		action: (
 			interaction: ChatInputCommandInteraction,
-			team: Team
-		) => Promise<void>
+			team: Team,
+		) => Promise<void>,
 	) {
 		const roles = this.getRoles(interaction);
 		if (!this.isTeamCaptain(roles)) {
 			await interaction.editReply(
-				"You must be a team captain to use this command."
+				"You must be a team captain to use this command.",
 			);
 			return;
 		}
@@ -124,7 +123,7 @@ export default class UtilityBot {
 				!(
 					blacklistedRoles.includes(role) ||
 					role === process.env.CAPTAIN_ROLE_ID
-				)
+				),
 		);
 		if (teamRoles.length === 1) {
 			const team = await orm.team.findFirst({
@@ -173,7 +172,7 @@ export default class UtilityBot {
 		team2Name: string,
 		team2Role: string,
 		date: string,
-		shipType: string
+		shipType: string,
 	) {
 		const guild = this.client.guilds.cache.get(this.guildId);
 		if (!guild) {
@@ -201,3 +200,4 @@ export default class UtilityBot {
 		});
 	}
 }
+*/

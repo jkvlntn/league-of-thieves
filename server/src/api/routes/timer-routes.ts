@@ -1,6 +1,6 @@
 import express from "express";
 import * as timerController from "../controllers/timer-controller";
-import { hasStaffPermissions } from "../middleware/auth-middleware";
+import { getStaffId, hasStaffPermissions } from "../middleware/auth-middleware";
 import { StaffPermissionName } from "@lot/common";
 
 const router = express.Router();
@@ -8,23 +8,27 @@ const router = express.Router();
 router.get("", timerController.getTimerStatus);
 router.post(
 	"/start",
+	getStaffId,
 	hasStaffPermissions(StaffPermissionName.REFEREE_MATCHES),
-	timerController.startTimer
+	timerController.startTimer,
 );
 router.post(
 	"/stop",
+	getStaffId,
 	hasStaffPermissions(StaffPermissionName.REFEREE_MATCHES),
-	timerController.stopTimer
+	timerController.stopTimer,
 );
 router.post(
 	"/reset",
+	getStaffId,
 	hasStaffPermissions(StaffPermissionName.REFEREE_MATCHES),
-	timerController.resetTimer
+	timerController.resetTimer,
 );
 router.post(
 	"/set",
+	getStaffId,
 	hasStaffPermissions(StaffPermissionName.REFEREE_MATCHES),
-	timerController.setTimer
+	timerController.setTimer,
 );
 
 export default router;

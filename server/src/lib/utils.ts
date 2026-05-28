@@ -25,13 +25,23 @@ export function generatePassword(length: number = 8): string {
 	return password;
 }
 
+export function generateNumericPassword(length: number = 5): string {
+	const charset = "0123456789";
+	let password = "";
+	for (let i = 0; i < length; i++) {
+		const randomIndex = Math.floor(Math.random() * charset.length);
+		password += charset[randomIndex];
+	}
+	return password;
+}
+
 export async function hashPassword(password: string): Promise<string> {
 	return await bcrypt.hash(password, 10);
 }
 
 export async function checkPassword(
 	password: string,
-	hash: string
+	hash: string,
 ): Promise<boolean> {
 	return await bcrypt.compare(password, hash);
 }

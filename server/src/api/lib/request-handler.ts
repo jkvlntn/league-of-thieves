@@ -10,8 +10,8 @@ export function asyncHandler<T extends object | void>(
 	fn: (
 		req: Request,
 		res: Response,
-		next: NextFunction
-	) => Promise<InternalResponse<T>>
+		next: NextFunction,
+	) => Promise<InternalResponse<T>>,
 ) {
 	return async (req: Request, res: Response, next: NextFunction) => {
 		try {
@@ -27,7 +27,7 @@ export function asyncHandler<T extends object | void>(
 }
 
 export function asyncMiddlewareHandler(
-	fn: (req: Request, res: Response, next: NextFunction) => Promise<void>
+	fn: (req: Request, res: Response, next: NextFunction) => Promise<void>,
 ) {
 	return async (req: Request, res: Response, next: NextFunction) => {
 		try {

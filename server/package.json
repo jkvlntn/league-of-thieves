@@ -6,7 +6,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "npx tsc",
 		"start": "node dist/index.js",
-		"dev": "nodemon -e ts,js --exec ts-node -r tsconfig-paths/register ./src/index.ts"
+		"dev": "nodemon -e ts,js --exec ts-node -r tsconfig-paths/register --project ./tsconfig.json ./src/index.ts"
 	},
 	"keywords": [],
 	"author": "",
@@ -28,13 +28,14 @@
 	},
 	"dependencies": {
 		"@discordjs/voice": "^0.18.0",
-		"@lot/common": "file:../common",
+		"@lot/common": "*",
 		"@prisma/client": "^6.12.0",
 		"bcrypt": "^6.0.0",
 		"cors": "^2.8.5",
 		"discord.js": "^14.18.0",
 		"dotenv": "^16.5.0",
 		"express": "^4.21.2",
+		"express-rate-limit": "^8.5.0",
 		"ffmpeg-static": "^5.2.0",
 		"jsonwebtoken": "^9.0.2",
 		"libsodium-wrappers": "^0.7.15",

@@ -1,24 +1,31 @@
-# Use the official Node.js LTS image
-FROM node:18-alpine
+FROM node:22-alpine AS build
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy only package files first to leverage Docker cache
-COPY package*.json ./
+COPY common ./common
+COPY server ./server
 
-# Install dependencies
+WORKDIR /app/common
 RUN npm install
-
-# Copy the rest of your application code
-COPY . .
-
 RUN npm run build
 
-# Expose the port the app runs on (adjust if needed)
+WORKDIR /app/server
+RUN npm install
+RUN npm run build
+
+
+FROM node:22-alpine
+
+WORKDIR /app/common
+COPY common ./
+COPY --from=build /app/common/dist ./dist
+
+WORKDIR /app/server
+COPY server ./
+COPY --from=build /app/server/dist ./dist
+RUN npm install --omit=dev
+RUN npx prisma generate
+
 EXPOSE 8000
 
-ENV PORT=8000
-
-# Command to start your app
-CMD ["node", "dist/index.js"]
+CMD ["npm", "start"]

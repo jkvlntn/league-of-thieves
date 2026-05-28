@@ -1,6 +1,5 @@
-import { CreatePlayerDTO, Player } from "@lot/common";
+import { Player } from "@lot/common";
 import { orm } from "../../lib/database";
-import { parseId } from "../../lib/utils";
 
 export async function getAllPlayers(): Promise<Player[]> {
 	const playersData = await orm.player.findMany({
@@ -22,18 +21,18 @@ export async function getAllPlayers(): Promise<Player[]> {
 export async function getPlayer(playerId: number): Promise<Player | null>;
 export async function getPlayer(playerUsername: string): Promise<Player | null>;
 export async function getPlayer(
-	playerIdentifier: number | string
+	playerIdentifier: number | string,
 ): Promise<Player | null> {
 	const playerData =
 		typeof playerIdentifier === "number"
 			? await orm.player.findUnique({
 					where: { id: playerIdentifier },
 					include: { team: { select: { name: true } } },
-			  })
+				})
 			: await orm.player.findUnique({
 					where: { username: playerIdentifier },
 					include: { team: { select: { name: true } } },
-			  });
+				});
 	if (!playerData) {
 		return null;
 	}
@@ -50,7 +49,7 @@ export async function getPlayer(
 export async function doesPlayerExist(playerId: number): Promise<boolean>;
 export async function doesPlayerExist(PlayerUsername: string): Promise<boolean>;
 export async function doesPlayerExist(
-	playerIdentifier: number | string
+	playerIdentifier: number | string,
 ): Promise<boolean> {
 	const player =
 		typeof playerIdentifier === "number"
@@ -78,7 +77,7 @@ export async function updatePlayer(
 		image?: string | null;
 		teamId?: number | null;
 		priority?: number;
-	}
+	},
 ): Promise<number> {
 	const updatedPlayerData = await orm.player.update({
 		where: { id: playerId },
