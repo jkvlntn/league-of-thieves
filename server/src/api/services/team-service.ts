@@ -5,6 +5,7 @@ import { slugify } from "../../lib/utils";
 export async function getAllTeams(): Promise<Team[]> {
 	const teamData = await orm.team.findMany({
 		include: { _count: { select: { players: true } } },
+		orderBy: { name: "asc" },
 	});
 	return teamData.map((team) => {
 		return {
