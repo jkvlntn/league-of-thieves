@@ -345,7 +345,7 @@ function PlayersPage() {
 										<TableCell>
 											<div className="w-25 h-25 rounded-full overflow-hidden">
 												<img
-													src={player.image || "default-pirate.png"}
+													src={player.image || "default_player.png"}
 													className="w-full h-full object-cover object-[center_-20%] scale-130"
 												/>
 											</div>
