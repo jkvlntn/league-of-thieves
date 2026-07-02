@@ -1,0 +1,1 @@
+const rankedBot = new RankedBot();
