@@ -7,8 +7,6 @@ export interface Team {
 	slugName: string;
 	motto: string | null;
 	discordRole: string | null;
-	galleonElo: number;
-	sloopElo: number;
 	playerCount: number;
 }
 

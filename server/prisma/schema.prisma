@@ -26,9 +26,6 @@ model Team {
   slugName String @unique
   players Player[]
   discordRole String? @unique
-  sloopElo Int @default(1000)
-  galleonElo Int @default(1000)
-  password String @default("")
   createdAt DateTime @default(now())
 }
 

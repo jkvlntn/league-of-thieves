@@ -15,8 +15,6 @@ export async function getAllTeams(): Promise<Team[]> {
 			image: team.image,
 			motto: team.motto,
 			playerCount: team._count.players,
-			sloopElo: team.sloopElo,
-			galleonElo: team.galleonElo,
 			discordRole: team.discordRole,
 		};
 	});
@@ -48,8 +46,6 @@ export async function getTeam(
 		image: teamData.image,
 		motto: teamData.motto,
 		playerCount: teamData._count.players,
-		sloopElo: teamData.sloopElo,
-		galleonElo: teamData.galleonElo,
 		discordRole: teamData.discordRole,
 	};
 }
@@ -84,8 +80,6 @@ export async function getTeamWithPlayers(
 		image: teamData.image,
 		motto: teamData.motto,
 		playerCount: teamData._count.players,
-		sloopElo: teamData.sloopElo,
-		galleonElo: teamData.galleonElo,
 		discordRole: teamData.discordRole,
 		players: teamData.players.map((player) => {
 			return {
