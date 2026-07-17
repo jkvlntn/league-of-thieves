@@ -16,7 +16,7 @@ function Nav() {
 
 function FullNav() {
 	return (
-		<div className="text-white px-5 h-15 fixed top-0 w-full z-50 text-lg bg-[#111112]">
+		<div className="sticky top-0 z-50 h-15 w-full bg-[#111112] px-5 text-lg text-white">
 			<div className="flex h-full justify-center items-center">
 				<div className="h-full w-1/5">
 					<Link to="/" className="h-full w-full">
@@ -37,7 +37,7 @@ function FullNav() {
 function MobileNav() {
 	const [isOpen, setIsOpen] = useState(false);
 	return (
-		<div className="text-white px-5 min-h-15 fixed top-0 w-full z-50 text-lg bg-[#111112]">
+		<div className="sticky top-0 z-50 min-h-15 w-full bg-[#111112] px-5 text-lg text-white">
 			<div className="flex h-15 justify-between items-center">
 				<div className="h-full w-2/3 flex justify-start">
 					<Link to="/">

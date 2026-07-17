@@ -7,13 +7,13 @@ function Footer() {
 					target="_blank"
 					rel="noreferrer"
 				>
-					<img src="discord_logo.png" alt="Discord" />
+					<img src="/discord_logo.png" alt="Discord" />
 				</a>
 			</div>
 			<div className="h-10 aspect-square">
 				<a href="https://twitter.com/SoTLeague" target="_blank">
 					<img
-						src="twitter_logo.png"
+						src="/twitter_logo.png"
 						alt="Twitter"
 						className="h-full w-full object-contain"
 					/>
@@ -22,7 +22,7 @@ function Footer() {
 			<div className="h-10 aspect-square">
 				<a href="https://www.twitch.tv/leagueofthievestv" target="_blank">
 					<img
-						src="twitch_logo.png"
+						src="/twitch_logo.png"
 						alt="Twitch"
 						className="h-full w-full object-contain"
 					/>
@@ -34,7 +34,7 @@ function Footer() {
 					target="_blank"
 				>
 					<img
-						src="youtube_logo.png"
+						src="/youtube_logo.png"
 						alt="YouTube"
 						className="h-full w-full object-contain"
 					/>
