@@ -17,9 +17,9 @@ function MatchPage() {
 
 	const colorBotCheckboxData = [
 		{
-			botColor: AudioBotColor.WHITE,
-			backgroundClass: "bg-gray-400",
-			borderClass: "border-gray-400",
+			botColor: AudioBotColor.PURPLE,
+			backgroundClass: "bg-purple-500",
+			borderClass: "border-purple-500",
 		},
 		{
 			botColor: AudioBotColor.BLUE,
@@ -27,9 +27,9 @@ function MatchPage() {
 			borderClass: "border-blue-500",
 		},
 		{
-			botColor: AudioBotColor.PURPLE,
-			backgroundClass: "bg-purple-500",
-			borderClass: "border-purple-500",
+			botColor: AudioBotColor.WHITE,
+			backgroundClass: "bg-gray-400",
+			borderClass: "border-gray-400",
 		},
 		{
 			botColor: AudioBotColor.GREEN,
