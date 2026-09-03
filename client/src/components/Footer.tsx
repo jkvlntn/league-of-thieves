@@ -5,7 +5,7 @@ function Footer() {
 				<a
 					href="https://discord.com/invite/leagueofthieves"
 					target="_blank"
-					rel="noreferrer"
+					rel="noopener noreferrer"
 					className="block h-full w-full transition-all hover:scale-105"
 				>
 					<img src="/discord_logo.png" alt="Discord" />
@@ -15,6 +15,7 @@ function Footer() {
 				<a
 					href="https://twitter.com/SoTLeague"
 					target="_blank"
+					rel="noopener noreferrer"
 					className="block h-full w-full transition-all hover:scale-105"
 				>
 					<img
@@ -28,6 +29,7 @@ function Footer() {
 				<a
 					href="https://www.twitch.tv/leagueofthievestv"
 					target="_blank"
+					rel="noopener noreferrer"
 					className="block h-full w-full transition-all hover:scale-105"
 				>
 					<img
@@ -41,6 +43,7 @@ function Footer() {
 				<a
 					href="https://www.youtube.com/channel/UC2DsBWEUNLzuTA3odTQ74iA"
 					target="_blank"
+					rel="noopener noreferrer"
 					className="block h-full w-full transition-all hover:scale-105"
 				>
 					<img
