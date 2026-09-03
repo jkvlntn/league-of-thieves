@@ -20,20 +20,20 @@ services:
     ports:
       - "3001:3001"
     env_file:
-      - ./server/.env
+      - ./staff-client/.env
     restart: always
     networks:
       - app-network
 
-  website:
+  client:
     build:
-      context: ./website
-      dockerfile: Dockerfile
-    container_name: website
+      context: ./
+      dockerfile: ./client/Dockerfile
+    container_name: client
     ports:
       - "3000:3000"
     env_file:
-      - ./website/.env
+      - ./client/.env
     restart: always
     networks:
       - app-network

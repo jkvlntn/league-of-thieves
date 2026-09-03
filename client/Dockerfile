@@ -3,13 +3,13 @@ FROM node:22-alpine AS build
 WORKDIR /app
 
 COPY common ./common
-COPY staff-client ./staff-client
+COPY client ./client
 
 WORKDIR /app/common
 RUN npm install
 RUN npm run build
 
-WORKDIR /app/staff-client
+WORKDIR /app/client
 RUN npm install
 RUN npm run build
 
@@ -19,8 +19,8 @@ WORKDIR /app
 
 RUN npm install -g serve
 
-COPY --from=build /app/staff-client/dist ./dist
+COPY --from=build /app/client/dist ./dist
 
-EXPOSE 3001
+EXPOSE 3000
 
-CMD ["serve", "-s", "dist", "-l", "3001"]
+CMD ["serve", "-s", "dist", "-l", "3000"]
