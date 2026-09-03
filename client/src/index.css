@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@font-face {
+	font-family: "Givens Antiqua Std";
+	src: url("/fonts/GivensAntiquaStd.otf") format("opentype");
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Alex Brush";
+	src: url("/fonts/AlexBrush.ttf") format("truetype");
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Old Style";
+	src: url("/fonts/OldStyle.ttf") format("truetype");
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+
+@theme {
+	--font-main: "Givens Antiqua Std", serif;
+	--font-motto: "Alex Brush", cursive;
+	--font-header: "Old Style", serif;
+}
+
+body {
+	font-family: var(--font-main);
+}
