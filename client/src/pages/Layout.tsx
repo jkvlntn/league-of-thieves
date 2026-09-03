@@ -9,8 +9,8 @@ function Layout() {
 			style={{ backgroundImage: "url('/background.png')" }}
 		>
 			<Nav />
-			<main className="w-full flex-1">
-				<div className="mx-auto w-full max-w-[1420px] px-5 py-5">
+			<main className="flex w-full flex-1 flex-col">
+				<div className="mx-auto flex w-full max-w-[1420px] flex-1 flex-col px-5 py-5">
 					<Outlet />
 				</div>
 			</main>

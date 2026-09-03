@@ -24,9 +24,24 @@ function FullNav() {
 					</Link>
 				</div>
 				<div className="w-3/5 flex gap-8 justify-center cursor-pointer">
-					<Link to="teams">Teams</Link>
-					<Link to="ranked">Ranked</Link>
-					<Link to="match">Match</Link>
+					<Link
+						to="teams"
+						className="inline-block cursor-pointer transition-all hover:scale-105"
+					>
+						Teams
+					</Link>
+					<Link
+						to="halloffame"
+						className="inline-block cursor-pointer transition-all hover:scale-105"
+					>
+						Hall of Fame
+					</Link>
+					<Link
+						to="match"
+						className="inline-block cursor-pointer transition-all hover:scale-105"
+					>
+						Match
+					</Link>
 				</div>
 				<div className="w-1/5"></div>
 			</div>
@@ -69,7 +84,7 @@ function MobileNav() {
 			</div>
 
 			<div
-				className={`overflow-hidden transition-[max-height] duration-700 ease-in-out ${
+				className={`absolute inset-x-5 top-full overflow-hidden bg-[#111112] transition-[max-height] duration-700 ease-in-out ${
 					isOpen ? "max-h-screen" : "max-h-0"
 				}`}
 			>
@@ -79,17 +94,29 @@ function MobileNav() {
 					}`}
 				>
 					<span>
-						<Link to="teams" onClick={() => setIsOpen(false)}>
+						<Link
+							to="teams"
+							onClick={() => setIsOpen(false)}
+							className="inline-block cursor-pointer transition-all hover:scale-105"
+						>
 							Teams
 						</Link>
 					</span>
 					<span>
-						<Link to="ranked" onClick={() => setIsOpen(false)}>
-							Ranked
+						<Link
+							to="halloffame"
+							onClick={() => setIsOpen(false)}
+							className="inline-block cursor-pointer transition-all hover:scale-105"
+						>
+							Hall of Fame
 						</Link>
 					</span>
 					<span>
-						<Link to="match" onClick={() => setIsOpen(false)}>
+						<Link
+							to="match"
+							onClick={() => setIsOpen(false)}
+							className="inline-block cursor-pointer transition-all hover:scale-105"
+						>
 							Match
 						</Link>
 					</span>

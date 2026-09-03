@@ -6,12 +6,17 @@ function Footer() {
 					href="https://discord.com/invite/leagueofthieves"
 					target="_blank"
 					rel="noreferrer"
+					className="block h-full w-full transition-all hover:scale-105"
 				>
 					<img src="/discord_logo.png" alt="Discord" />
 				</a>
 			</div>
 			<div className="h-10 aspect-square">
-				<a href="https://twitter.com/SoTLeague" target="_blank">
+				<a
+					href="https://twitter.com/SoTLeague"
+					target="_blank"
+					className="block h-full w-full transition-all hover:scale-105"
+				>
 					<img
 						src="/twitter_logo.png"
 						alt="Twitter"
@@ -20,7 +25,11 @@ function Footer() {
 				</a>
 			</div>
 			<div className="h-10 aspect-square">
-				<a href="https://www.twitch.tv/leagueofthievestv" target="_blank">
+				<a
+					href="https://www.twitch.tv/leagueofthievestv"
+					target="_blank"
+					className="block h-full w-full transition-all hover:scale-105"
+				>
 					<img
 						src="/twitch_logo.png"
 						alt="Twitch"
@@ -32,6 +41,7 @@ function Footer() {
 				<a
 					href="https://www.youtube.com/channel/UC2DsBWEUNLzuTA3odTQ74iA"
 					target="_blank"
+					className="block h-full w-full transition-all hover:scale-105"
 				>
 					<img
 						src="/youtube_logo.png"

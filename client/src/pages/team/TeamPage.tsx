@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getRequest } from "../../lib/api";
 import type { TeamWithPlayers } from "@lot/common";
 import PageError from "../../components/PageError";
+import Loading from "../../components/Loading";
 
 function TeamPage() {
 	const { teamName } = useParams<{ teamName: string }>();
@@ -11,6 +12,7 @@ function TeamPage() {
 	const [error, setError] = useState<string>("");
 	const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
 	const [rotationCount, setRotationCount] = useState(0);
+	const touchStartX = useRef<number | null>(null);
 
 	async function fetchTeams() {
 		try {
@@ -42,62 +44,65 @@ function TeamPage() {
 		return () => window.removeEventListener("resize", handleResize);
 	}, []);
 
-	useEffect(() => {
-		const intervalId = window.setInterval(() => {
-			setRotationCount((count) => count + 1);
-		}, 5000);
+	function handleTouchStart(event: React.TouchEvent<HTMLDivElement>) {
+		touchStartX.current = event.touches[0]?.clientX ?? null;
+	}
 
-		return () => {
-			window.clearInterval(intervalId);
-		};
-	}, []);
+	function handleTouchEnd(event: React.TouchEvent<HTMLDivElement>) {
+		if (touchStartX.current === null) return;
+
+		const touchEndX = event.changedTouches[0]?.clientX;
+		const swipeDistance =
+			touchEndX === undefined ? 0 : touchEndX - touchStartX.current;
+		touchStartX.current = null;
+
+		if (Math.abs(swipeDistance) < 50) return;
+		setRotationCount((count) => count + (swipeDistance < 0 ? -1 : 1));
+	}
 
 	function rotateList<T>(list: T[], r: number): T[] {
 		const n = list.length;
+		if (n === 0) return [];
+
+		const rotation = ((r % n) + n) % n;
 		const rotatedList = new Array(n);
 		for (let i = 0; i < n; i++) {
-			rotatedList[(i + r) % n] = list[i];
+			rotatedList[(i + rotation) % n] = list[i];
 		}
 		return rotatedList;
 	}
 
 	const priorityOrder = [6, 4, 2, 0, 1, 3, 5, 7];
 
-	const visiblePlayerCount = screenWidth < 640 ? 3 : screenWidth < 768 ? 5 : 8;
+	const visiblePlayerCount =
+		screenWidth < 640
+			? 3
+			: screenWidth < 768
+				? 5
+				: Math.min(8, team?.players.length || 0);
 	const sortedPlayers = rotateList(
 		team?.players.sort(
 			(a, b) =>
 				priorityOrder.indexOf(a.priority) - priorityOrder.indexOf(b.priority),
 		) || [],
-		rotationCount,
+		screenWidth < 768 ? rotationCount : 0,
 	);
 
-	const displayedPlayers = sortedPlayers.slice(
-		Math.floor((sortedPlayers.length - visiblePlayerCount) / 2),
-		Math.floor((sortedPlayers.length - visiblePlayerCount) / 2) +
-			visiblePlayerCount,
-	);
-
-	// const availablePriortyOrder = priorityOrder.filter(
-	// 	(p) => p < (team?.players.length || 0),
-	// );
-
-	// const rotatedPlayers = team?.players.map((player) => {
-	// 	const priorityIndex =
-	// 		(availablePriortyOrder.indexOf(player.priority) + selectedPlayerIndex) %
-	// 		availablePriortyOrder.length;
-	// 	return { ...player, priority: availablePriortyOrder[priorityIndex] };
-	// });
-
-	// const sortedPlayers =
-	// 	rotatedPlayers?.sort((a, b) => a.priority - b.priority) || [];
+	const displayedPlayers =
+		screenWidth < 768
+			? sortedPlayers.slice(
+					Math.floor((sortedPlayers.length - visiblePlayerCount) / 2),
+					Math.floor((sortedPlayers.length - visiblePlayerCount) / 2) +
+						visiblePlayerCount,
+				)
+			: sortedPlayers;
 
 	return (
-		<>
-			{isLoading && <div>Loading...</div>}
+		<div className="flex w-full flex-1 items-center justify-center">
+			{isLoading && <Loading />}
 			{!isLoading && !!error && <PageError message={error} />}
 			{!isLoading && !error && team && (
-				<div className="flex flex-col items-center justify-center gap-5">
+				<div className="flex w-full flex-1 flex-col items-center justify-center gap-5">
 					<div className="text-center">
 						<div className="text-6xl font-header bg-clip-text text-transparent bg-gradient-to-b from-[#F6AE64] to-[#41301E]">
 							{team.name.toUpperCase()}
@@ -105,15 +110,19 @@ function TeamPage() {
 						<div className="text-2xl font-motto">{team.motto}</div>
 					</div>
 
-					<div className="w-full flex justify-center">
+					<div
+						className="w-full flex justify-center"
+						onTouchStart={handleTouchStart}
+						onTouchEnd={handleTouchEnd}
+					>
 						{displayedPlayers.map((p, i) => (
 							<PlayerImage
 								key={p.id}
 								imageUrl={p.image}
 								shift={
-									i < (displayedPlayers.length - 1) / 2
+									i < Math.floor((displayedPlayers.length - 1) / 2)
 										? "right"
-										: i > (displayedPlayers.length - 1) / 2
+										: i > Math.floor((displayedPlayers.length - 1) / 2)
 											? "left"
 											: undefined
 								}
@@ -121,6 +130,7 @@ function TeamPage() {
 									100 - Math.abs((displayedPlayers.length - 1) / 2 - i)
 								}
 								distance={
+									screenWidth >= 768 ||
 									Math.abs((displayedPlayers.length - 1) / 2 - i) === 0
 										? "center"
 										: Math.abs((displayedPlayers.length - 1) / 2 - i) === 1
@@ -137,7 +147,7 @@ function TeamPage() {
 					</div>
 				</div>
 			)}
-		</>
+		</div>
 	);
 }
 

@@ -1,6 +1,6 @@
 function HomePage() {
 	return (
-		<div className="min-h-[inherit] mb-15 sm:mb-0 flex flex-col gap-20 sm:gap-0 sm:flex-row sm:items-center w-full">
+		<div className="mb-15 flex w-full flex-1 flex-col gap-20 sm:mb-0 sm:flex-row sm:items-center sm:gap-0">
 			{/* left */}
 			<div className="flex items-center w-full sm:w-1/2 z-10 hover:z-20 sm:duration-500 sm:hover:scale-110 sm:origin-left sm:transition-all">
 				{/* text */}
