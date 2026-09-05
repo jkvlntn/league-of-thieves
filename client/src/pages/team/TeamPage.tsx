@@ -127,13 +127,18 @@ function TeamPage() {
 											: undefined
 								}
 								overlapHeight={
-									100 - Math.abs((displayedPlayers.length - 1) / 2 - i)
+									100 -
+									Math.abs(Math.floor((displayedPlayers.length - 1) / 2) - i)
 								}
 								distance={
 									screenWidth >= 768 ||
-									Math.abs((displayedPlayers.length - 1) / 2 - i) === 0
+									Math.abs(
+										Math.floor((displayedPlayers.length - 1) / 2) - i,
+									) === 0
 										? "center"
-										: Math.abs((displayedPlayers.length - 1) / 2 - i) === 1
+										: Math.abs(
+													Math.floor((displayedPlayers.length - 1) / 2) - i,
+											  ) === 1
 											? "close"
 											: "far"
 								}
