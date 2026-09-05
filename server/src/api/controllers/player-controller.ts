@@ -39,7 +39,7 @@ export const getPlayerByUsername = asyncHandler<Player>(
 			status: 200,
 			data: player,
 		};
-	}
+	},
 );
 
 export const createPlayer = asyncHandler<Player>(async (req, res, next) => {
@@ -52,12 +52,12 @@ export const createPlayer = asyncHandler<Player>(async (req, res, next) => {
 			.positive("Team ID must be positive")
 			.nullable()
 			.optional(),
-		priority: z.coerce.number().min(0).optional(),
+		priority: z.coerce.number().min(0).max(7).optional(),
 	});
 
 	const validPlayerData = playerSchema.parse(req.body);
 	const playerExists = await playerService.doesPlayerExist(
-		validPlayerData.username
+		validPlayerData.username,
 	);
 	if (playerExists) {
 		throw new HttpError(400, "A player with this username already exists");
@@ -98,7 +98,7 @@ export const updatePlayer = asyncHandler<Player>(async (req, res, next) => {
 			.positive("Team ID must be positive")
 			.nullable()
 			.optional(),
-		priority: z.coerce.number().min(0).optional(),
+		priority: z.coerce.number().min(0).max(7).optional(),
 	});
 
 	const playerId = parseId(req.params.id);
@@ -110,11 +110,11 @@ export const updatePlayer = asyncHandler<Player>(async (req, res, next) => {
 
 	if (validPlayerData.username !== undefined) {
 		const playerWithSameUsernameExists = await playerService.doesPlayerExist(
-			validPlayerData.username
+			validPlayerData.username,
 		);
 		if (playerWithSameUsernameExists) {
 			const existingPlayer = await playerService.getPlayer(
-				validPlayerData.username
+				validPlayerData.username,
 			);
 			if (existingPlayer && existingPlayer.id !== playerId) {
 				throw new HttpError(400, "A player with this username already exists");
@@ -124,7 +124,7 @@ export const updatePlayer = asyncHandler<Player>(async (req, res, next) => {
 
 	const updatedPlayerId = await playerService.updatePlayer(
 		playerId,
-		validPlayerData
+		validPlayerData,
 	);
 	const updatedPlayer = await playerService.getPlayer(updatedPlayerId);
 	if (!updatedPlayer) {

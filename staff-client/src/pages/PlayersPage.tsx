@@ -20,6 +20,8 @@ import {
 	postRequest,
 } from "../lib/api";
 
+const positions = ["L1", "R1", "L2", "R2", "L3", "R3", "L4", "R4"];
+
 function PlayersPage() {
 	const [players, setPlayers] = useState<Player[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
@@ -32,7 +34,7 @@ function PlayersPage() {
 		username: string;
 		image: string;
 		teamId: number | "";
-		priority: string;
+		priority: number | "";
 	}>({
 		username: "",
 		image: "",
@@ -89,8 +91,12 @@ function PlayersPage() {
 			const responseJson = await postRequest<void>("/players", {
 				username: playerFormFields.username || undefined,
 				image: playerFormFields.image || undefined,
-				teamId: playerFormFields.teamId || undefined,
-				priority: Number(playerFormFields.priority) || undefined,
+				teamId:
+					playerFormFields.teamId === "" ? undefined : playerFormFields.teamId,
+				priority:
+					playerFormFields.priority === ""
+						? undefined
+						: playerFormFields.priority,
 			});
 			setModalType(null);
 			fetchPlayers();
@@ -112,8 +118,8 @@ function PlayersPage() {
 			const responseJson = await patchRequest<void>("/players/" + playerId, {
 				username: playerFormFields.username || null,
 				image: playerFormFields.image || null,
-				teamId: playerFormFields.teamId || null,
-				priority: Number(playerFormFields.priority) || 0,
+				teamId: playerFormFields.teamId === "" ? null : playerFormFields.teamId,
+				priority: Number(playerFormFields.priority),
 			});
 			setModalType(null);
 			fetchPlayers();
@@ -150,7 +156,6 @@ function PlayersPage() {
 			| React.ChangeEvent<HTMLSelectElement>,
 	) {
 		const { name, value } = e.target;
-		console.log(value);
 		setPlayerFormFields({ ...playerFormFields, [name]: value });
 	}
 
@@ -190,13 +195,20 @@ function PlayersPage() {
 								</option>
 							))}
 						</Select>
-						<Input
-							type="number"
+						<Select
 							name="priority"
-							placeholder="Priority"
 							value={playerFormFields.priority}
 							onChange={updatePlayerFormField}
-						/>
+						>
+							<option value="" disabled>
+								Select Position
+							</option>
+							{positions.map((position, priority) => (
+								<option key={priority} value={priority}>
+									{position}
+								</option>
+							))}
+						</Select>
 						<div className="flex flex-row-reverse gap-2">
 							<Button onClick={createPlayer}>Confirm</Button>
 							<Button
@@ -275,13 +287,17 @@ function PlayersPage() {
 								</option>
 							))}
 						</Select>
-						<Input
-							type="text"
+						<Select
 							name="priority"
-							placeholder="Priority"
 							value={playerFormFields.priority}
 							onChange={updatePlayerFormField}
-						/>
+						>
+							{positions.map((position, priority) => (
+								<option key={priority} value={priority}>
+									{position}
+								</option>
+							))}
+						</Select>
 						<div className="flex flex-row-reverse gap-2">
 							<Button onClick={editPlayer}>Confirm</Button>
 							<Button
@@ -335,7 +351,7 @@ function PlayersPage() {
 									<TableHeaderCell></TableHeaderCell>
 									<TableHeaderCell>Username</TableHeaderCell>
 									<TableHeaderCell>Team</TableHeaderCell>
-									<TableHeaderCell>Priority</TableHeaderCell>
+									<TableHeaderCell>Position</TableHeaderCell>
 									<TableHeaderCell></TableHeaderCell>
 								</TableRow>
 							</TableHead>
@@ -352,7 +368,7 @@ function PlayersPage() {
 										</TableCell>
 										<TableCell>{player.username}</TableCell>
 										<TableCell>{player.teamName || "Free Agent"}</TableCell>
-										<TableCell>{player.priority}</TableCell>
+										<TableCell>{positions[player.priority]}</TableCell>
 										<TableActionsCell
 											onDelete={() => {
 												setSelectedPlayer(player);
@@ -364,7 +380,7 @@ function PlayersPage() {
 													username: player.username,
 													image: player.image || "",
 													teamId: player.teamId || "",
-													priority: player.priority.toString(),
+													priority: player.priority,
 												});
 												setModalType("edit");
 											}}
