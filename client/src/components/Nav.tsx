@@ -42,6 +42,12 @@ function FullNav() {
 					>
 						Match
 					</Link>
+					<Link
+						to="arena"
+						className="inline-block cursor-pointer transition-all hover:scale-105"
+					>
+						Arena
+					</Link>
 				</div>
 				<div className="w-1/5"></div>
 			</div>
@@ -118,6 +124,15 @@ function MobileNav() {
 							className="inline-block cursor-pointer transition-all hover:scale-105"
 						>
 							Match
+						</Link>
+					</span>
+					<span>
+						<Link
+							to="arena"
+							onClick={() => setIsOpen(false)}
+							className="inline-block cursor-pointer transition-all hover:scale-105"
+						>
+							Arena
 						</Link>
 					</span>
 				</div>
