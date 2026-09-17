@@ -2,6 +2,7 @@ import { AudioBotSound, AudioBotColor } from "@lot/common";
 import { Button, Checkbox, Input } from "../components/Form";
 import { useState } from "react";
 import { Timer } from "../components/Timer";
+import { Scoreboard } from "../components/Scoreboard";
 import { postRequest } from "../lib/api";
 import toast from "react-hot-toast";
 
@@ -130,83 +131,91 @@ function MatchPage() {
 	}
 
 	return (
-		<div className="flex flex-col gap-6 w-full h-full">
+		<div className="flex flex-col gap-8 w-full h-full">
 			<div className="text-3xl">Match Controls</div>
-			<div className="flex gap-6">
-				{colorBotCheckboxData.map((checkboxData) => (
-					<Checkbox
-						key={checkboxData.botColor}
-						className={checkboxData.borderClass}
-						checked={selectedColors.includes(checkboxData.botColor)}
-						color={checkboxData.backgroundClass}
-						onChange={() => {
-							if (selectedColors.includes(checkboxData.botColor)) {
-								setSelectedColors(
-									selectedColors.filter(
-										(color) => color !== checkboxData.botColor,
-									),
-								);
-							} else {
-								setSelectedColors([...selectedColors, checkboxData.botColor]);
-							}
-						}}
-					/>
-				))}
-			</div>
-			<div className="flex gap-2">
-				<Button variant="secondary" onClick={() => setSelectedColors([])}>
-					Deselect All
-				</Button>
-				<Button
-					variant="primary"
-					onClick={() =>
-						setSelectedColors([
-							...colorBotCheckboxData.map((data) => data.botColor),
-						])
-					}
-				>
-					Select All
-				</Button>
-			</div>
-			<div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full max-w-lg">
-				<Button variant="primary" onClick={() => sendBotCommand("connect")}>
-					Connect
-				</Button>
-				<Button variant="primary" onClick={() => sendBotCommand("disconnect")}>
-					Disconnect
-				</Button>
-			</div>
-			<div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full max-w-lg">
-				{audioButtonData.map((buttonData) => (
-					<Button
-						key={buttonData.sound}
-						variant="secondary"
-						onClick={() => sendBotCommand("play", buttonData.sound)}
-					>
-						{buttonData.label}
+
+			<div className="flex flex-col gap-4">
+				<div className="text-xl font-semibold">Audio Bot</div>
+				<div className="flex gap-6">
+					{colorBotCheckboxData.map((checkboxData) => (
+						<Checkbox
+							key={checkboxData.botColor}
+							className={checkboxData.borderClass}
+							checked={selectedColors.includes(checkboxData.botColor)}
+							color={checkboxData.backgroundClass}
+							onChange={() => {
+								if (selectedColors.includes(checkboxData.botColor)) {
+									setSelectedColors(
+										selectedColors.filter(
+											(color) => color !== checkboxData.botColor,
+										),
+									);
+								} else {
+									setSelectedColors([...selectedColors, checkboxData.botColor]);
+								}
+							}}
+						/>
+					))}
+				</div>
+				<div className="flex gap-2">
+					<Button variant="secondary" onClick={() => setSelectedColors([])}>
+						Deselect All
 					</Button>
-				))}
+					<Button
+						variant="primary"
+						onClick={() =>
+							setSelectedColors([
+								...colorBotCheckboxData.map((data) => data.botColor),
+							])
+						}
+					>
+						Select All
+					</Button>
+				</div>
+				<div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full max-w-lg">
+					<Button variant="primary" onClick={() => sendBotCommand("connect")}>
+						Connect
+					</Button>
+					<Button
+						variant="primary"
+						onClick={() => sendBotCommand("disconnect")}
+					>
+						Disconnect
+					</Button>
+				</div>
+				<div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full max-w-lg">
+					{audioButtonData.map((buttonData) => (
+						<Button
+							key={buttonData.sound}
+							variant="secondary"
+							onClick={() => sendBotCommand("play", buttonData.sound)}
+						>
+							{buttonData.label}
+						</Button>
+					))}
+				</div>
 			</div>
-			<div className="text-4xl">
-				<Timer />
-			</div>
-			<div className="flex gap-2">
-				<Button variant="primary" onClick={() => sendTimerCommand("start")}>
-					Start
-				</Button>
-				<Button variant="primary" onClick={() => sendTimerCommand("stop")}>
-					Stop
-				</Button>
-				<Button variant="primary" onClick={() => sendTimerCommand("reset")}>
-					Reset
-				</Button>
-			</div>
-			<div>
+
+			<div className="flex flex-col gap-4 border-t border-gray-700 pt-8">
+				<div className="text-xl font-semibold">Match Timer</div>
+				<div className="text-4xl">
+					<Timer />
+				</div>
+				<div className="flex gap-2">
+					<Button variant="primary" onClick={() => sendTimerCommand("start")}>
+						Start
+					</Button>
+					<Button variant="primary" onClick={() => sendTimerCommand("stop")}>
+						Stop
+					</Button>
+					<Button variant="primary" onClick={() => sendTimerCommand("reset")}>
+						Reset
+					</Button>
+				</div>
 				<form
 					className="flex gap-2"
 					onSubmit={(e) => {
 						e.preventDefault();
-						console.log(timerFormFields);
 						sendTimerCommand("set");
 					}}
 				>
@@ -228,6 +237,11 @@ function MatchPage() {
 						Set
 					</Button>
 				</form>
+			</div>
+
+			<div className="flex flex-col gap-4 border-t border-gray-700 pt-8">
+				<div className="text-xl font-semibold">Arena Scoreboard</div>
+				<Scoreboard />
 			</div>
 		</div>
 	);

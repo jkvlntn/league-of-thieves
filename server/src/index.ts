@@ -10,6 +10,7 @@ import teamRouter from "./api/routes/team-routes";
 import authRouter from "./api/routes/auth-routes";
 import staffRouter from "./api/routes/staff-routes";
 import statsRouter from "./api/routes/stats-routes";
+import scoreboardRouter from "./api/routes/scoreboard-routes";
 import http from "http";
 
 import rateLimit from "express-rate-limit";
@@ -60,6 +61,7 @@ app.use("/api/teams", teamRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/staff", staffRouter);
 app.use("/api/stats", statsRouter);
+app.use("/api/scoreboard", scoreboardRouter);
 
 app.use(errorHandler);
 

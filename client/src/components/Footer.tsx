@@ -1,6 +1,6 @@
 function Footer() {
 	return (
-		<div className="flex h-15 w-full items-start justify-center gap-8">
+		<div className="flex h-15 w-full items-center justify-center gap-8">
 			<div className="h-10 aspect-square">
 				<a
 					href="https://discord.com/invite/leagueofthieves"
