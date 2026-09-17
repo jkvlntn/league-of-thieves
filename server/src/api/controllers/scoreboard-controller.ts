@@ -24,9 +24,9 @@ export const resetScoreboard = asyncHandler<void>(async (req, res, next) => {
 
 export const setScoreboardScore = asyncHandler<void>(async (req, res, next) => {
 	const scoreboardUpdateSchema = z.object({
-		round: z.number().min(1).max(4),
+		round: z.number().int().min(1).max(4),
 		teamColor: z.enum(ScoreboardTeamColor),
-		placement: z.number().min(0).max(5),
+		placement: z.number().int().min(0).max(5),
 	});
 	const { round, teamColor, placement } = scoreboardUpdateSchema.parse(
 		req.body,

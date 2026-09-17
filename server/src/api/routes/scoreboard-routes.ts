@@ -8,14 +8,14 @@ const router = express.Router();
 router.get("", scoreboardController.getScoreboard);
 router.post(
 	"/reset",
-	// getStaffId,
-	// hasStaffPermissions(StaffPermissionName.REFEREE_MATCHES),
+	getStaffId,
+	hasStaffPermissions(StaffPermissionName.REFEREE_MATCHES),
 	scoreboardController.resetScoreboard,
 );
 router.post(
 	"/set",
-	// getStaffId,
-	// hasStaffPermissions(StaffPermissionName.REFEREE_MATCHES),
+	getStaffId,
+	hasStaffPermissions(StaffPermissionName.REFEREE_MATCHES),
 	scoreboardController.setScoreboardScore,
 );
 
